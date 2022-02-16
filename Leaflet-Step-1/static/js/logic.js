@@ -11,12 +11,12 @@ d3.json(dataUrl).then(function (data) {
 
 
   function getColor(d) {
-    return d > 90 ? 'red' :
-           d > 70  ? 'orange' :
+    return d > 90 ? 'purple' :
+           d > 70  ? 'blue' :
            d > 50  ? 'yellow' :
-           d > 30 ? '#FC4E2A' :
-           d > 10  ? '#FD8D3C' :
-                      'green';
+           d > 30 ? 'green' :
+           d > 10  ? 'orange' :
+                      'red';
 }
   function createFeatures(earthquakeData) {
   
@@ -30,7 +30,7 @@ d3.json(dataUrl).then(function (data) {
     console.log(feature)
     return {
         fillColor: getColor(feature.geometry.coordinates[2]),
-        color: "black",
+        color: "white",
         weight: 1,
         fillOpacity: 0.5,
         radius: (feature.properties.mag)*7
@@ -64,11 +64,20 @@ function pointToLayer(point, latlng) {
     var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     });
+
+
+var satelliteMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox.satellite"
+});
+
   
     // Create a baseMaps object.
     var baseMaps = {
-      "Street Map": street,
-      "Topographic Map": topo
+      "Grayscale": street,
+      "Topographic Map": topo,
+      "Satellite Map": satelliteMap
     };
   
     // Create an overlay object to hold our overlay.
