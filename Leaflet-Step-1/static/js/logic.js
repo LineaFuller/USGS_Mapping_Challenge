@@ -57,27 +57,37 @@ function pointToLayer(point, latlng) {
   function createMap(earthquakes) {
   
     // Create the base layers.
-    var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    })
-  
+var mapboxUrl = "https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={api_key}";
+
+
+ var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
+
     var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     });
 
 
-var satelliteMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+var satellite = L.tileLayer(mapboxUrl, {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
-    id: "mapbox.satellite"
+    id: "mapbox.satellite",
+    api_key: API_KEY
 });
 
+// var grayscale = L.tileLayer(mapboxUrl, {
+//     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+//     maxZoom: 18,
+//     id: "mapbox.light",
+//     api_key: API_KEY
+// });
   
     // Create a baseMaps object.
     var baseMaps = {
-      "Grayscale": street,
+      "Street Map": street,
       "Topographic Map": topo,
-      "Satellite Map": satelliteMap
+      "Satellite Map": satellite
     };
   
     // Create an overlay object to hold our overlay.
@@ -94,31 +104,34 @@ var satelliteMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}
       layers: [street, earthquakes]
     });
 
-
-    // Add Legend
-
-    var legend = L.control({position: 'bottomright'});
-
-legend.onAdd = function (myMap) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
     // Create a layer control.
     // Pass it our baseMaps and overlayMaps.
     // Add the layer control to the map.
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
+
+    // Add Legend
+    var legend = L.control({position: "bottomright"});
+
+legend.onAdd = function () {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        levels = [-10, 10, 30, 50, 70, 90]
+        
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+     for (var i = 0; i < levels.length; i++) {
+       div.innerHTML +=
+            '<i style="background:' + getColor(   levels[i] + 1) + '"></i> ' +
+        levels[i] + (grades[i + 1] ? '&ndash;' +    levels[i + 1] + '<br>' : '+')};
+    }
+
+     return div;
+};
+
+legend.addTo(myMap);
   
-  }
+
+
+
