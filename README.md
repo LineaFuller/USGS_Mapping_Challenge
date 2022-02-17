@@ -10,7 +10,7 @@ Welcome to the United States Geological Survey, or USGS for short. The USGS is r
 
 The USGS provides earthquake data in a number of different formats, updated every 5 minutes. I picked the "All Earthquakes from the Past 7 Days" data set to visualize from the USGS GeoJSON Feed page. I used the URL of this JSON to pull in the data for our visualization.
 
-## Next, Imported & visualized my Data
+## Next, I imported & visualized my data
 
 I create a map using Leaflet that plots all of the earthquakes from my data set based on their longitude and latitude. My data markers reflect the magnitude of the earthquake by their size and and depth of the earthquake by color. Earthquakes with higher magnitudes appear larger and earthquakes with greater depth appear darker in color.
 
