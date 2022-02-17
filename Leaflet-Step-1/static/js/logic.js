@@ -1,6 +1,7 @@
+// Earthquake GeoJSON URL variable
 const dataUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
-// Perform a GET request to the query URL/
+// Perform a GET request to the dataURL
 d3.json(dataUrl).then(function (data) {
     // Once we get a response, send the data.features object to the createFeatures function.
     createFeatures(data.features);
@@ -8,8 +9,7 @@ d3.json(dataUrl).then(function (data) {
 
   });
 
-
-
+// Function to determine color of Marker Based on the depth of the earthquake
   function getColor(d) {
     return d > 90 ? 'purple' :
            d > 70  ? 'blue' :
@@ -111,7 +111,36 @@ var satellite = L.tileLayer(mapboxUrl, {
       collapsed: false
     }).addTo(myMap);
 
-    // Add Legend
+
+
+// Tectonic GeoJSON URL variable
+    var tectonicsUrl = "https://github.com/fraxen/tectonicplates/blob/master/GeoJSON/PB2002_boundaries.json"
+    // Perform a GET request to the dataURL
+d3.json(tectonicsUrl).then(function (tectdata) {
+    // Once we get a response, send the data.features object to the createFeatures function.
+    createFeatures(tectdata);
+    console.log(tectdata)
+  });
+
+  // Create Tectonic Plate LayerGroup
+  var plates = new L.LayerGroup();
+  // Perform a GET request to the dataURL
+  d3.json(tectonicsURL, function(tectData) {
+          // Create a GeoJSON Layer the plateData
+          L.geoJson(tectData, {
+              color: "green",
+              weight: 2
+          // Add plateData to tectonicPlates LayerGroups 
+          }).addTo(plates);
+          // Add tectonicPlates Layer to the Map
+          plates.addTo(myMap);
+      });
+
+
+
+
+
+// Add Legend
     var legend = L.control({position: "bottomright"});
 
 legend.onAdd = function () {
