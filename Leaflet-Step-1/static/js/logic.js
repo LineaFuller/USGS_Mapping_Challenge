@@ -18,6 +18,7 @@ d3.json(dataUrl).then(function (data) {
            d > 10  ? 'orange' :
                       'red';
 }
+// Earthquake Feature Function
   function createFeatures(earthquakeData) {
   
     // Define a function that we want to run once for each feature in the features array.
@@ -76,13 +77,6 @@ var satellite = L.tileLayer(mapboxUrl, {
     api_key: API_KEY
 });
 
-// var grayscale = L.tileLayer(mapboxUrl, {
-//     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-//     maxZoom: 18,
-//     id: "mapbox.light",
-//     api_key: API_KEY
-// });
-  
     // Create a baseMaps object.
     var baseMaps = {
       "Street Map": street,
